@@ -427,3 +427,12 @@ speech token/feat、音色 embedding（约 1~2s/句），对同一基准音频�
 
 ### 待用户处理
 - 原 `config.yaml` 中出现过的真实 API Key 应立即在服务商控制台吊销并重新生成。
+
+## 2026-10-23 GitHub 发布
+
+- 初始化 Git 仓库并创建 `main` 分支。
+- 发布私有仓库：https://github.com/traveler-li/Take-MH
+- 初始提交：`d44e688`（`Initial commit: real-time avatar conversation system`）。
+- `CONTRIBUTORS.md` 显式列出 traveler-li 与 DeepSeek。
+- 初始提交包含 `Co-authored-by: DeepSeek` 标识；GitHub 自动 Contributors 图表是否识别取决于 DeepSeek 对应账号是否与提交邮箱关联。
+
