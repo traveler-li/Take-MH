@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.env.*
+config.local.yaml
+
+# 模型权重与临时数据（不提交）
+models/
+assets/
+.torch_cache/
+*.wav
+*.mp4
+*.avi
+results/
+tmp/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器本地配置
+.vscode/

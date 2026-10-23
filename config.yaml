@@ -1,0 +1,112 @@
+# Take-MH 实时照片虚拟人对话系统主配置
+
+app:
+  # 音频输出设备索引，None 表示系统默认输出设备
+  audio_output_device_index: null
+  # 画面显示缩放比例（0.5 表示窗口显示为生成帧的一半大小）
+  frame_display_scale: 0.75
+  # 调试模式：开启后打印更多模块状态日志
+  debug: true
+
+asr:
+  # SenseVoice-small 模型标识（FunASR 官方模型名）
+  model: "iic/SenseVoiceSmall"
+  # ASR 强制 CPU 推理，不使用 CUDA
+  device: "cpu"
+  # VAD 模型（FunASR 官方 fsmn-vad，用于端点检测）
+  vad_model: "fsmn-vad"
+  # 麦克风采样率，SenseVoice 使用 16k
+  sample_rate: 16000
+  # 单声道
+  channels: 1
+  # 每次从麦克风读取的音频块时长（毫秒）
+  chunk_ms: 320
+  # VAD 返回时间戳的单位（毫秒）；若 FunASR 版本返回 10ms 帧号，改这里为 10
+  vad_time_unit_ms: 1
+  # 语音结束后的静音阈值（毫秒），越小响应越快但可能切碎短句
+  vad_silence_ms: 600
+  # 单段语音超过该时长（毫秒）强制切分并输出中间结果
+  max_single_segment_ms: 15000
+  # ASR 内部音频缓冲保留时长（秒），防止长时间运行内存增长
+  max_buffer_seconds: 30
+  # 识别参数：语言（auto/zh/en/ja/ko/yue）
+  language: "auto"
+  # 是否启用标点/数字格式化
+  use_itn: true
+  # VAD 合并相关参数
+  batch_size_s: 60
+  merge_vad: true
+  merge_length_s: 15
+
+llm:
+  # OpenAI 兼容接口地址
+  base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+  # API 密钥不写入配置文件；请使用 --api-key、环境变量或启动时隐藏输入
+  # 模型名称
+  model_name: "deepseek-v4-flash"
+  # 生成温度
+  temperature: 0.7
+  # 系统提示词
+  system_prompt: "你是一个友好、自然的语音助手，请用简洁口语化的中文回答。"
+  # 单次请求超时（秒）
+  timeout_seconds: 30
+  # 失败自动重试次数（2 次）
+  max_retries: 2
+  # 上下文历史保留的最大消息条数（超出后裁剪最旧的）
+  max_history_messages: 20
+
+tts:
+  # CosyVoice2 0.5B 模型目录（本地路径或 ModelScope 模型名）
+  model_dir: "iic/CosyVoice2-0.5B"
+  # GPU 上使用 fp16 推理
+  fp16: true
+  # 参考音频路径（3~10 秒，用于零样本音色克隆）
+  prompt_wav: "assets/prompt.wav"
+  # 参考音频对应的文本
+  prompt_text: "大家好，此段是该项目的基准语音文件。今天我们来聊一下人工智能的发展，以及它对人类社会的影响，请多关照。"
+  # 参考音频时长约束（秒）；官方推荐 3~10s，当前基准语音约 11.7s 故上限放宽到 13
+  min_prompt_seconds: 3.0
+  max_prompt_seconds: 13.0
+  # 输出 PCM 采样率（16000Hz，供播放与 MuseTalk 使用）
+  output_sample_rate: 16000
+  # 合成是否使用官方流式输出
+  stream: true
+  # 句间插入的静音时长（秒），避免句子生硬拼接
+  inter_sentence_silence_seconds: 0.25
+  # 文本队列与音频队列容量
+  text_queue_size: 64
+  audio_queue_size: 128
+
+musetalk:
+  # MuseTalk UNet 权重与配置（按官方仓库实际路径填写）
+  unet_model_path: "models/musetalkV15/unet.pth"
+  unet_config: "models/musetalkV15/musetalk.json"
+  # VAE 类型（官方默认 sd-vae）
+  vae_type: "sd-vae"
+  # Whisper 特征提取模型目录（官方音频特征依赖）
+  whisper_dir: "models/whisper"
+  # 基准照片（单张正面人像）
+  base_image: "assets/base.jpg"
+  # 推理设备（本地 GPU）
+  device: "cuda:0"
+  # 输出帧率
+  fps: 25
+  # UNet 推理批次大小，越大吞吐越高但显存占用越高
+  # 注意：8GB 显存（如 RTX 5060）下 batch_size=8 会 CUDA OOM，建议 2~4
+  batch_size: 2
+  # 人脸框偏移（v1 使用）
+  bbox_shift: 0
+  # 音频特征左右填充帧数
+  audio_padding_length_left: 2
+  audio_padding_length_right: 2
+  # 每次处理的最小音频块时长（秒），官方接口按整段音频特征工作，这里分块逼近实时
+  chunk_seconds: 1.0
+  # MuseTalk 版本：v15 / v1
+  version: "v15"
+  # v15 面部解析区域宽度
+  left_cheek_width: 90
+  right_cheek_width: 90
+  # 帧缓存队列容量
+  frame_queue_size: 256
+  # 音频队列容量
+  audio_queue_size: 128

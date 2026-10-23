@@ -1,0 +1,52 @@
+# 基础依赖
+numpy>=1.24,<2
+pyyaml>=6.0
+scipy>=1.10
+
+# 音频输入输出
+PyAudio>=0.2.13
+librosa>=0.10
+soundfile>=0.12
+
+# LLM
+openai>=1.30
+
+# ASR：SenseVoice（FunASR 官方）
+funasr>=1.1
+modelscope>=1.15
+
+# 深度学习框架（先安装与 CUDA 匹配的 2.7.x wheel）
+torch>=2.7,<2.8
+torchaudio>=2.7,<2.8
+
+# TTS：CosyVoice 官方 SDK
+# 官方要求从源码安装：git clone https://github.com/FunAudioLLM/CosyVoice.git
+# cd CosyVoice && pip install -r requirements.txt
+# 并将仓库根目录加入 PYTHONPATH（cosyvoice 包位于仓库内）
+
+# 面部驱动：MuseTalk 官方代码
+# 官方要求从源码安装：git clone https://github.com/TMElyralab/MuseTalk.git
+# cd MuseTalk && pip install -r requirements.txt
+# 并将仓库根目录加入 PYTHONPATH（musetalk 包位于仓库内）
+transformers>=4.38
+omegaconf>=2.3
+einops>=0.7
+tqdm>=4.66
+opencv-python>=4.9,<5
+
+# MuseTalk 前置
+diffusers>=0.30
+accelerate>=0.28
+mmcv-lite>=2.1.0,<2.2.0
+mmengine>=0.10
+mmpose>=1.3,<1.4
+face-detection>=0.2
+
+# CosyVoice 官方源码依赖
+hyperpyyaml>=1.2
+conformer>=0.3
+inflect>=7
+openai-whisper
+pyworld>=0.3
+onnx>=1.16
+onnxruntime>=1.18
